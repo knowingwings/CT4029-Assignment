@@ -1,6 +1,6 @@
 from atexit import register
 import tkinter as tk
-from tkinter import FLAT, SOLID, UNDERLINE, StringVar, ttk, messagebox
+from tkinter import BOTTOM, CENTER, FLAT, SOLID, TOP, UNDERLINE, StringVar, ttk, messagebox
 import re
 import sqlite3
 from tkinter.font import ITALIC
@@ -25,7 +25,7 @@ class window(tk.Tk):
         #dictionary of frames
         self.frames = {}
         # add the components to the dictionary.
-        for F in (LoginPage, RegisterPage, Dashboard_Admin, Dashboard_Staff, Dashboard_Customer):
+        for F in (LoginPage, RegisterPage, Dashboard_Admin, Dashboard_Staff, Dashboard_Customer, OffersPage):
             frame = F(container, self)
 
             # the windows class acts as the root window for the frames.
@@ -92,7 +92,7 @@ class LoginPage(tk.Frame):
         loginButton = tk.Button(
             self,
             text="Login",
-            command=lambda: login(self, controller, usernameInput.get(), passwordInput.get()),
+            command=lambda: login(controller, usernameInput.get(), passwordInput.get()),
             font=("Arial", 25),
             border=False,
             bg="light gray",
@@ -111,7 +111,7 @@ class LoginPage(tk.Frame):
         )
         registerButton.place(x=1420, y=475)
 
-        def login(self, controller, username, password):
+        def login(controller, username, password):
             if(username=="" or password == ""):
                 tk.messagebox.showwarning(title="Invalid Email or Password", message="Please input an Email or Password")
             elif(validEmail(username)!=True):
@@ -171,7 +171,7 @@ class RegisterPage(tk.Frame):
         mainImg = ttk.Label(
             self,
             image=mIMG)
-        mainImg.image = mIMG # Prevents python clean-up destroying image
+        mainImg.image = mIMG # Prevents TK clean-up destroying image
         mainImg.pack(side="left")
 
 
@@ -221,12 +221,65 @@ class Dashboard_Admin(tk.Frame):
         label = tk.Label(self, text="ADMIN PAGE")
         label.pack(padx=10, pady=10)
 
-        switch_window_button = tk.Button(
+        offerIcon = tk.PhotoImage(file='./assets/icons/price-tag180x180.png')
+        offersButton = tk.Button(
             self,
-            text="Go to the Completion Screen",
-            command=lambda: controller.show_frame(LoginPage),
+            image=offerIcon,
+            text="Offers",
+            font=("Arial", 12),
+            height=220,
+            width=220,
+            compound= TOP,
+            bg="light gray",
+            command=lambda: controller.show_frame(OffersPage),
         )
-        switch_window_button.pack(side="bottom", fill=tk.X)
+        offersButton.image=offerIcon # Prevents TK clean-up destroying image
+        offersButton.place(x=960, y=540)
+
+        staffIcon = tk.PhotoImage(file='./assets/icons/id-card180x180.png')
+        staffButton = tk.Button(
+            self,
+            image=staffIcon,
+            text="Staff",
+            font=("Arial", 12),
+            height=220,
+            width=220,
+            compound= TOP,
+            bg="light gray",
+            command=lambda: controller.show_frame(OffersPage),
+        )
+        staffButton.image=staffIcon # Prevents TK clean-up destroying image
+        staffButton.place(x=1210, y=540)
+
+        itemIcon = tk.PhotoImage(file='./assets/icons/search180x180.png')
+        itemButton = tk.Button(
+            self,
+            image=itemIcon,
+            text="Items",
+            font=("Arial", 12),
+            height=220,
+            width=220,
+            compound= TOP,
+            bg="light gray",
+            command=lambda: controller.show_frame(OffersPage),
+        )
+        itemButton.image=itemIcon # Prevents TK clean-up destroying image
+        itemButton.place(x=460, y=540)
+
+        dataIcon = tk.PhotoImage(file='./assets/icons/monitor180x180.png')
+        dataButton = tk.Button(
+            self,
+            image=dataIcon,
+            text="Staff",
+            font=("Arial", 12),
+            height=220,
+            width=220,
+            compound= TOP,
+            bg="light gray",
+            command=lambda: controller.show_frame(OffersPage),
+        )
+        dataButton.image=dataIcon # Prevents TK clean-up destroying image
+        dataButton.place(x=710, y=540)
 
 class Dashboard_Staff(tk.Frame):
     def __init__(self, parent, controller):
@@ -254,6 +307,20 @@ class Dashboard_Customer(tk.Frame):
         )
         switch_window_button.pack(side="bottom", fill=tk.X)
 
+class OffersPage(tk.Frame):
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        label = tk.Label(self, text="Offers Page")
+        label.pack(padx=10, pady=10)
+
+        switch_window_button = tk.Button(
+            self,
+            text="Go to the Completion Screen",
+            command=lambda: controller.show_frame(LoginPage),
+        )
+        switch_window_button.pack(side="bottom", fill=tk.X)
+
+
 # Searches the db for an email address returns id
 def findUser(email):
     pass
@@ -265,7 +332,7 @@ def passwordMatch(id,password):
 def temp(username):
     if(username=="steve@email.com"):
         return 0
-    elif(username=="clare@email.com"):
+    elif(username=="clara@email.com"):
         return 1
     else:
         return 3
